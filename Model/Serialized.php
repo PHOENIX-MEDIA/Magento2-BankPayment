@@ -17,12 +17,15 @@
 
 namespace Phoenix\BankPayment\Model;
 
-
+/**
+ * Class Serialized - is used to unserialize values and ensure compatibility to magento 2.1.x and 2.2
+ * @package Phoenix\BankPayment\Model
+ */
 class Serialized
 {
     /**
      * @param String $value
-     * @return array|mixed
+     * @return array
      */
     public function unserialize(String $value)
     {
