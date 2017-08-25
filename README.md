@@ -3,6 +3,8 @@ The module allows you to enter one or more bank accounts in the payment configur
 
 This extension is maintained by PHOENIX MEDIA, Magento Enterprise Partner in Stuttgart and Vienna.
 
-Changelog
----------
+## Installation
+See installation information in Release Notes tab.
+
+## Changelog
 See changelog in Release Notes tab.
