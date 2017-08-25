@@ -1,0 +1,71 @@
+<!--
+/**
+ * @copyright  Copyright (c) 2017 Phoenix Media GmbH (http://www.phoenix-media.eu)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+-->
+<div class="payment-method" data-bind="css: {'_active': (getCode() == isChecked())}">
+    <div class="payment-method-title field choice">
+        <input type="radio"
+               name="payment[method]"
+               class="radio"
+               data-bind="attr: {'id': getCode()}, value: getCode(), checked: isChecked, click: selectPaymentMethod, visible: isRadioButtonVisible()"/>
+        <label data-bind="attr: {'for': getCode()}" class="label"><span data-bind="text: getTitle()"></span></label>
+    </div>
+    <div class="payment-method-content">
+        <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+        <div class="payment-method-billing-address">
+            <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+        <!-- ko if: getFormCmsUrl() -->
+        <div data-bind="html: getFormCmsUrl()"></div>
+        <!--/ko-->
+        <!-- ko if: showAccounts() -->
+        <p data-bind="html: getInstructions()"></p>
+        <div>
+            <!-- ko foreach: getAccounts() -->
+            <!-- ko if: $index() !== 0 -->
+            <br /><hr /><br />
+            <!--/ko-->
+            <table>
+                <tbody>
+                <tr data-bind="if: account_holder"><td><label data-bind="i18n: 'Account holder'"></label></td><td data-bind="text: account_holder"></td></tr>
+                <tr data-bind="if: bank_name"><td><label data-bind="i18n: 'Bank name'"></label></td><td data-bind="text: bank_name"></td></tr>
+                <tr data-bind="if: iban"><td><label data-bind="i18n: 'IBAN'"></label></td><td data-bind="text: iban"></td></tr>
+                <tr data-bind="if: bic"><td><label data-bind="i18n: 'BIC'"></label></td><td data-bind="text: bic"></td></tr>
+                </tbody>
+            </table>
+            <!--/ko-->
+            <!-- ko if: getCustomText() -->
+            <br />
+            <!-- ko text: getCustomText() --><!-- /ko --><br />
+            <!--/ko-->
+        </div>
+        <!--/ko-->
+        <div class="checkout-agreements-block">
+            <!-- ko foreach: $parent.getRegion('before-place-order') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+        <div class="actions-toolbar">
+            <div class="primary">
+                <button class="action primary checkout"
+                        type="submit"
+                        data-bind="
+                        click: placeOrder,
+                        attr: {title: $t('Place Order')},
+                        css: {disabled: !isPlaceOrderActionAllowed()},
+                        enable: (getCode() == isChecked())
+                        "
+                        disabled>
+                    <span data-bind="i18n: 'Place Order'"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+        

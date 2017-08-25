@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <payment>
+            <phoenix_bankpayment>
+                <active>0</active>
+                <model>Phoenix\BankPayment\Model\BankPayment</model>
+                <order_status>pending</order_status>
+                <title>Bank Prepayment</title>
+                <allowspecific>0</allowspecific>
+                <form_block_type>0</form_block_type>
+                <show_bank_accounts_in_pdf>1</show_bank_accounts_in_pdf>
+                <show_customtext_in_pdf>1</show_customtext_in_pdf>
+                <group>offline</group>
+            </phoenix_bankpayment>
+        </payment>
+    </default>
+</config>

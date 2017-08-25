@@ -1,0 +1,53 @@
+<?php
+/**
+ * Phoenix Bank Prepayment module for Magento 2
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * @category   Mage
+ * @package    Phoenix_BankPayment
+ * @copyright  Copyright (c) 2017 Phoenix Media GmbH (http://www.phoenix-media.eu)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+
+/**
+ * @var $block \Phoenix\BankPayment\Block\Info
+ */
+?>
+<?php if($_info = $block->getInfo()): ?>
+    <?php echo $block->getMethod()->getTitle(); ?>
+    <?php if ($block->getShowBankAccountsInPdf()): ?>
+        <?php echo ' - '.$block->escapeHtml(__('Account info')); ?>
+        {{pdf_row_separator}}
+        <?php $_accounts = $block->getAccounts(); ?>
+        <?php foreach($_accounts as $_account): ?>
+        {{pdf_row_separator}}
+        <?php if ($_accountHolder = $_account->getAccountHolder()): ?>
+        <?php echo $block->escapeHtml(__('Account holder')) ?>: <?php echo $block->escapeHtml($_accountHolder) ?>
+        {{pdf_row_separator}}
+        <?php endif; ?>
+        <?php if ($_bankName = $_account->getBankName()): ?>
+        <?php echo $block->escapeHtml(__('Bank name')) ?>: <?php echo $block->escapeHtml($_bankName) ?>
+        {{pdf_row_separator}}
+        <?php endif; ?>
+        <?php if ($_iban = $_account->getIban()): ?>
+        <?php echo $block->escapeHtml(__('IBAN')) ?>: <?php echo $block->escapeHtml($_iban) ?>
+        {{pdf_row_separator}}
+        <?php endif; ?>
+        <?php if ($_bic = $_account->getBic()): ?>
+        <?php echo $block->escapeHtml(__('BIC')) ?>: <?php echo $block->escapeHtml($_bic) ?>
+        {{pdf_row_separator}}
+        <?php endif; ?>
+        <?php endforeach; ?>
+    <?php endif; ?>
+    <?php if ($this->getShowCustomTextInPdf() && $_customText = $block->getMethod()->getCustomText()): ?>
+        {{pdf_row_separator}}
+        <?php echo $block->escapeHtml($_customText); ?>
+    <?php endif; ?>
+    {{pdf_row_separator}}
+<?php endif; ?>
