@@ -23,8 +23,8 @@ namespace Phoenix\BankPayment\Block\Adminhtml;
  */
 class BankAccount extends \Magento\Config\Block\System\Config\Form\Field
 {
-    protected $_addRowButtonHtml = array();
-    protected $_removeRowButtonHtml = array();
+    protected $addRowButtonHtml = [];
+    protected $removeRowButtonHtml = [];
 
     /**
      * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
@@ -40,15 +40,17 @@ class BankAccount extends \Magento\Config\Block\System\Config\Form\Field
 
         $html .= '<div id="bank_account_container">';
         if ($this->_getValue('account_holder')) {
-            foreach ($this->_getValue('account_holder') as $i=>$f) {
+            foreach ($this->_getValue('account_holder') as $i => $f) {
                 if ($i) {
                     $html .= $this->_getRowTemplateHtml($i);
                 }
             }
         }
         $html .= '</div><br />';
-        $html .= $this->_getAddRowButtonHtml('bank_account_container',
-                'bank_account_template', __('Add Bank Account'));
+        $html .= $this->_getAddRowButtonHtml(
+            'bank_account_container',
+            'bank_account_template', __('Add Bank Account')
+        );
 
         return $html;
     }
@@ -57,17 +59,17 @@ class BankAccount extends \Magento\Config\Block\System\Config\Form\Field
      * @param int $i
      * @return string
      */
-    protected function _getRowTemplateHtml($i=0)
+    protected function _getRowTemplateHtml($i = 0)
     {
         $html = '<fieldset>';
-        $html .= '<label>'.__('Account holder').'</label>';
-        $html .= '<input class="input-text" type="text" name="'.$this->getElement()->getName().'[account_holder][]" value="' . $this->_getValue('account_holder/'.$i) . '" '.$this->_getDisabled().' />';
-        $html .= '<label>'.__('Bank name').'</label>';
-        $html .= '<input class="input-text" type="text" name="'.$this->getElement()->getName().'[bank_name][]" value="' . $this->_getValue('bank_name/'.$i) . '" '.$this->_getDisabled().' />';
-        $html .= '<label>'.__('IBAN').'</label>';
-        $html .= '<input class="input-text" type="text" name="'.$this->getElement()->getName().'[iban][]" value="' . $this->_getValue('iban/'.$i) . '" '.$this->_getDisabled().' />';
-        $html .= '<label>'.__('BIC').'</label>';
-        $html .= '<input class="input-text" type="text" name="'.$this->getElement()->getName().'[bic][]" value="' . $this->_getValue('bic/'.$i) . '" '.$this->_getDisabled().' />';
+        $html .= '<label>' . __('Account holder') . '</label>';
+        $html .= '<input class="input-text" type="text" name="' . $this->getElement()->getName() . '[account_holder][]" value="' . $this->_getValue('account_holder/' . $i) . '" ' . $this->_getDisabled() . ' />';
+        $html .= '<label>' . __('Bank name') . '</label>';
+        $html .= '<input class="input-text" type="text" name="' . $this->getElement()->getName() . '[bank_name][]" value="' . $this->_getValue('bank_name/' . $i) . '" ' . $this->_getDisabled() . ' />';
+        $html .= '<label>' . __('IBAN') . '</label>';
+        $html .= '<input class="input-text" type="text" name="' . $this->getElement()->getName() . '[iban][]" value="' . $this->_getValue('iban/' . $i) . '" ' . $this->_getDisabled() . ' />';
+        $html .= '<label>' . __('BIC') . '</label>';
+        $html .= '<input class="input-text" type="text" name="' . $this->getElement()->getName() . '[bic][]" value="' . $this->_getValue('bic/' . $i) . '" ' . $this->_getDisabled() . ' />';
         $html .= '<br />&nbsp;<br />';
         $html .= $this->_getRemoveRowButtonHtml();
         $html .= '</fieldset>';
@@ -89,7 +91,7 @@ class BankAccount extends \Magento\Config\Block\System\Config\Form\Field
      */
     protected function _getValue($key)
     {
-        return $this->getElement()->getData('value/'.$key);
+        return $this->getElement()->getData('value/' . $key);
     }
 
     /**
@@ -99,7 +101,7 @@ class BankAccount extends \Magento\Config\Block\System\Config\Form\Field
      */
     protected function _getSelected($key, $value)
     {
-        return $this->getElement()->getData('value/'.$key)==$value ? 'selected="selected"' : '';
+        return $this->getElement()->getData('value/' . $key) == $value ? 'selected="selected"' : '';
     }
 
     /**
@@ -108,18 +110,18 @@ class BankAccount extends \Magento\Config\Block\System\Config\Form\Field
      * @param string $title
      * @return mixed
      */
-    protected function _getAddRowButtonHtml($container, $template, $title='Add')
+    protected function _getAddRowButtonHtml($container, $template, $title = 'Add')
     {
-        if (!isset($this->_addRowButtonHtml[$container])) {
-            $this->_addRowButtonHtml[$container] = $this->getLayout()->createBlock('\Magento\Backend\Block\Widget\Button')
-                    ->setType('button')
-                    ->setClass('add')
-                    ->setLabel(__($title))
-                    ->setOnClick("Element.insert($('".$container."'), {bottom: $('".$template."').innerHTML})")
-                    ->setDisabled($this->_getDisabled())
-                    ->toHtml();
+        if (!isset($this->addRowButtonHtml[$container])) {
+            $this->addRowButtonHtml[$container] = $this->getLayout()->createBlock('\Magento\Backend\Block\Widget\Button')
+                ->setType('button')
+                ->setClass('add')
+                ->setLabel(__($title))
+                ->setOnClick("Element.insert($('" . $container . "'), {bottom: $('" . $template . "').innerHTML})")
+                ->setDisabled($this->_getDisabled())
+                ->toHtml();
         }
-        return $this->_addRowButtonHtml[$container];
+        return $this->addRowButtonHtml[$container];
     }
 
     /**
@@ -127,17 +129,17 @@ class BankAccount extends \Magento\Config\Block\System\Config\Form\Field
      * @param string $title
      * @return array
      */
-    protected function _getRemoveRowButtonHtml($selector='fieldset', $title='Delete Account')
+    protected function _getRemoveRowButtonHtml($selector = 'fieldset', $title = 'Delete Account')
     {
-        if (!$this->_removeRowButtonHtml) {
-            $this->_removeRowButtonHtml = $this->getLayout()->createBlock('\Magento\Backend\Block\Widget\Button')
-                    ->setType('button')
-                    ->setClass('delete v-middle')
-                    ->setLabel(__($title))
-                    ->setOnClick("Element.remove($(this).up('".$selector."'))")
-                    ->setDisabled($this->_getDisabled())
-                    ->toHtml();
+        if (!$this->removeRowButtonHtml) {
+            $this->removeRowButtonHtml = $this->getLayout()->createBlock('\Magento\Backend\Block\Widget\Button')
+                ->setType('button')
+                ->setClass('delete v-middle')
+                ->setLabel(__($title))
+                ->setOnClick("Element.remove($(this).up('" . $selector . "'))")
+                ->setDisabled($this->_getDisabled())
+                ->toHtml();
         }
-        return $this->_removeRowButtonHtml;
+        return $this->removeRowButtonHtml;
     }
 }

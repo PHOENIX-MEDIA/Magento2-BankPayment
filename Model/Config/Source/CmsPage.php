@@ -31,9 +31,12 @@ class CmsPage extends \Magento\Cms\Model\Config\Source\Page
     {
         if (!$this->options) {
             parent::toOptionArray();
-            array_unshift($this->options, array(
-                'value' => '',
-                'label' => __('-- Please Select --'))
+            array_unshift(
+                $this->options,
+                [
+                    'value' => '',
+                    'label' => __('-- Please Select --')
+                ]
             );
         }
         return $this->options;

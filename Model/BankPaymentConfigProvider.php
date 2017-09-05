@@ -23,42 +23,36 @@ use Magento\Payment\Helper\Data as PaymentHelper;
 
 class BankPaymentConfigProvider implements ConfigProviderInterface
 {
-    /**
-     * @var string
-     */
-    protected $_methodCode = BankPayment::PAYMENT_METHOD_PHOENIX_BANKPAYMENT_CODE;
 
     /**
-     * @var BankPayment
+     * @var BankPayment $method
      */
-    protected $_method;
+    private $method;
 
     /**
-     * @var Serialized $_serialized
+     * @var Serialized $serialized
      */
-    protected $_serialized;
+    private $serialized;
 
     /**
-     * @var Escaper
+     * @var Escaper $escaper
      */
-    protected $_escaper;
+    private $escaper;
 
     /**
      * @var \Magento\Cms\Model\PageFactory
      */
-    protected $_cmsPageFactory;
-
+    private $cmsPageFactory;
 
     /**
      * @var \Magento\Cms\Helper\Page
      */
-    protected $_cmsPageHelper;
-
+    private $cmsPageHelper;
 
     /**
      * @var array
      */
-    protected $_accounts;
+    private $accounts;
 
     /**
      * BankPaymentConfigProvider constructor.
@@ -74,12 +68,13 @@ class BankPaymentConfigProvider implements ConfigProviderInterface
         PaymentHelper $paymentHelper,
         Serialized $serialized,
         Escaper $escaper
-    ) {
-        $this->_cmsPageFactory = $cmsPageFactory;
-        $this->_cmsPageHelper = $cmsPageHelper;
-        $this->_escaper = $escaper;
-        $this->_serialized = $serialized;
-        $this->_method = $paymentHelper->getMethodInstance($this->_methodCode);
+    )
+    {
+        $this->cmsPageFactory = $cmsPageFactory;
+        $this->cmsPageHelper = $cmsPageHelper;
+        $this->escaper = $escaper;
+        $this->serialized = $serialized;
+        $this->method = $paymentHelper->getMethodInstance(BankPayment::PAYMENT_METHOD_PHOENIX_BANKPAYMENT_CODE);
     }
 
     /**
@@ -87,13 +82,13 @@ class BankPaymentConfigProvider implements ConfigProviderInterface
      */
     public function getConfig()
     {
-        return $this->_method->isAvailable() ? [
+        return $this->method->isAvailable() ? [
             'payment' => [
-                $this->_methodCode => [
-                    'formcmsurl'        => $this->getFormCmsUrl(),
-                    'customtext'        => nl2br($this->_escaper->escapeHtml($this->_method->getCustomText())),
-                    'instructions'      => nl2br($this->_escaper->escapeHtml($this->getInstructions())),
-                    'accounts'          => $this->getAccounts()
+                BankPayment::PAYMENT_METHOD_PHOENIX_BANKPAYMENT_CODE => [
+                    'formcmsurl' => $this->getFormCmsUrl(),
+                    'customtext' => nl2br($this->escaper->escapeHtml($this->method->getCustomText())),
+                    'instructions' => nl2br($this->escaper->escapeHtml($this->getInstructions())),
+                    'accounts' => $this->getAccounts()
                 ],
             ],
         ] : [];
@@ -105,10 +100,10 @@ class BankPaymentConfigProvider implements ConfigProviderInterface
     public function getFormCmsUrl()
     {
         $pageUrl = null;
-        $pageCode = $this->_method->getConfigData('form_cms_page');
+        $pageCode = $this->method->getConfigData('form_cms_page');
         if (!empty($pageCode)) {
-            if ($pageId = $this->_cmsPageFactory->create()->checkIdentifier($pageCode, $this->_method->getStore())) {
-                $pageUrl = $this->_cmsPageHelper->getPageUrl($pageId);
+            if ($pageId = $this->cmsPageFactory->create()->checkIdentifier($pageCode, $this->method->getStore())) {
+                $pageUrl = $this->cmsPageHelper->getPageUrl($pageId);
                 $pageUrl = __('More information on this payment method can be found <a target="_blank" href="%1">here</a>.', $pageUrl);
             }
         }
@@ -121,25 +116,25 @@ class BankPaymentConfigProvider implements ConfigProviderInterface
     public function getAccounts()
     {
 
-        if (!$this->_accounts) {
+        if (!$this->accounts) {
 
-            $accounts = $this->_serialized->unserialize($this->_method->getConfigData('bank_accounts'));
+            $accounts = $this->serialized->unserialize($this->method->getConfigData('bank_accounts'));
 
-            $this->_accounts = array();
+            $this->accounts = [];
             $fields = is_array($accounts) ? array_keys($accounts) : null;
             if (!empty($fields)) {
                 foreach ($accounts[$fields[0]] as $i => $k) {
                     if ($k) {
-                        $account = array();
+                        $account = [];
                         foreach ($fields as $field) {
-                            $account[$field] = $this->_escaper->escapeHtml($accounts[$field][$i]);
+                            $account[$field] = $this->escaper->escapeHtml($accounts[$field][$i]);
                         }
-                        $this->_accounts[] = $account;
+                        $this->accounts[] = $account;
                     }
                 }
             }
         }
-        return $this->_accounts;
+        return $this->accounts;
     }
 
     /**
@@ -149,14 +144,14 @@ class BankPaymentConfigProvider implements ConfigProviderInterface
     {
 
         if (count($this->getAccounts()) == 1) {
-            if ($this->_method->getPayWithinXDays() > 0) {
-                return __('Please transfer the money within %1 days to the following bank account', $this->_method->getPayWithinXDays());
+            if ($this->method->getPayWithinXDays() > 0) {
+                return __('Please transfer the money within %1 days to the following bank account', $this->method->getPayWithinXDays());
             } else {
                 return __('Please transfer the money to the following bank account');
             }
         } else {
-            if ($this->_method->getPayWithinXDays() > 0) {
-                return __('Please transfer the money within %1 days to one of the following bank accounts', $this->_method->getPayWithinXDays());
+            if ($this->method->getPayWithinXDays() > 0) {
+                return __('Please transfer the money within %1 days to one of the following bank accounts', $this->method->getPayWithinXDays());
             } else {
                 return __('Please transfer the money to one of the following bank accounts');
             }

@@ -36,7 +36,6 @@ class Form extends \Magento\Payment\Block\Form
      */
     protected $cmsPageFactory;
 
-
     /**
      * @var \Magento\Cms\Helper\Page
      */

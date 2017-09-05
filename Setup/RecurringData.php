@@ -22,10 +22,9 @@ use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\App\Config\ConfigResource\ConfigInterface;
 use Magento\Framework\App\ProductMetadataInterface;
 use Magento\Framework\Setup\InstallDataInterface;
-use Magento\Framework\DB\AggregatedFieldDataConverter;
-use Magento\Framework\DB\Select\QueryModifierFactory;
 use Magento\Framework\DB\FieldToConvert;
-use Magento\Framework\DB\DataConverter\SerializedToJson;
+
+use Magento\Framework\App\ObjectManager;
 
 /**
  * Class RecurringData
@@ -36,53 +35,32 @@ class RecurringData implements InstallDataInterface
     /**
      * @var ProductMetadataInterface
      */
-    protected $productMetadata;
+    private $productMetadata;
 
     /**
      * @var ConfigInterface
      */
-    protected $resourceConfig;
-
-    /**
-     * @var \Magento\Framework\DB\AggregatedFieldDataConverter
-     */
-    protected $aggregatedFieldConverter;
-
-    /**
-     * @var \Magento\Framework\DB\Select\QueryModifierFactory
-     */
-    protected $queryModifierFactory;
-
-    /**
-     * @var \Magento\Framework\DB\Query\Generator
-     */
-    protected $queryGenerator;
+    private $resourceConfig;
 
     /**
      * @var array
      */
-    private $configPathsToConvert = array(
+    private $configPathsToConvert = [
         'payment/phoenix_bankpayment/bank_accounts'
-    );
-
+    ];
 
     /**
      * RecurringData constructor.
      * @param ProductMetadataInterface $productMetadata
      * @param ConfigInterface $resourceConfig
-     * @param AggregatedFieldDataConverter $aggregatedFieldConverter
-     * @param QueryModifierFactory $queryModifierFactory
      */
     public function __construct(
         ProductMetadataInterface $productMetadata,
-        ConfigInterface  $resourceConfig,
-        AggregatedFieldDataConverter $aggregatedFieldConverter,
-        QueryModifierFactory $queryModifierFactory
-    ) {
+        ConfigInterface $resourceConfig
+    )
+    {
         $this->productMetadata = $productMetadata;
         $this->resourceConfig = $resourceConfig;
-        $this->aggregatedFieldConverter = $aggregatedFieldConverter;
-        $this->queryModifierFactory = $queryModifierFactory;
     }
 
     /**
@@ -90,7 +68,7 @@ class RecurringData implements InstallDataInterface
      */
     public function install(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
-        if (version_compare($this->productMetadata->getVersion(), '2.2.0', '>=')) {
+        if (version_compare($this->productMetadata->getVersion(), '2.2.0-r20', '>=')) {
             $this->convertDataSerializedToJson($setup);
         }
     }
@@ -103,10 +81,15 @@ class RecurringData implements InstallDataInterface
      */
     private function convertDataSerializedToJson(ModuleDataSetupInterface $setup)
     {
+        /*
+         * Note: we have to use the objectManager to create some class instances because DI does not work below
+         * Magento 2.2 due to the fact that these classes do not exist.
+         */
+        $queryModifierFactory = ObjectManager::getInstance()->get(\Magento\Framework\DB\Select\QueryModifierFactory::class);
 
         $fields = array();
         foreach ($this->configPathsToConvert as $path) {
-            $queryModifier = $this->queryModifierFactory->create(
+            $queryModifier = $queryModifierFactory->create(
                 'in',
                 [
                     'values' => [
@@ -118,7 +101,7 @@ class RecurringData implements InstallDataInterface
             );
 
             $fields[] = new FieldToConvert(
-                SerializedToJson::class,
+                \Magento\Framework\DB\DataConverter\SerializedToJson::class,
                 $setup->getTable('core_config_data'),
                 'config_id',
                 'value',
@@ -126,6 +109,7 @@ class RecurringData implements InstallDataInterface
             );
         }
 
-        $this->aggregatedFieldConverter->convert($fields, $setup->getConnection());
+        $aggregatedFieldConverter = ObjectManager::getInstance()->get(\Magento\Framework\DB\AggregatedFieldDataConverter::class);
+        $aggregatedFieldConverter->convert($fields, $setup->getConnection());
     }
 }

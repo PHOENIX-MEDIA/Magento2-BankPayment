@@ -33,7 +33,6 @@ class BankPayment extends \Magento\Payment\Model\Method\AbstractMethod
      */
     protected $_code = self::PAYMENT_METHOD_PHOENIX_BANKPAYMENT_CODE;
 
-
     /**
      * @var \Phoenix\BankPayment\Model\Serialized $_serialized
      */
@@ -75,7 +74,6 @@ class BankPayment extends \Magento\Payment\Model\Method\AbstractMethod
      */
     protected $_canCapturePartial = true;
 
-
     /**
      * @var \Magento\Framework\DataObjectFactory
      */
@@ -94,7 +92,8 @@ class BankPayment extends \Magento\Payment\Model\Method\AbstractMethod
         \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
         \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         array $data = []
-    ) {
+    )
+    {
         parent::__construct(
             $context,
             $registry,
@@ -149,16 +148,16 @@ class BankPayment extends \Magento\Payment\Model\Method\AbstractMethod
                 $storeId = $paymentInfo->getQuote()->getStoreId();
             }
 
-            $accounts = $this->_serialized->unserialize($this->_scopeConfig->getValue('payment/phoenix_bankpayment/bank_accounts', \Magento\Store\Model\ScopeInterface::SCOPE_STORE,$storeId));
+            $accounts = $this->_serialized->unserialize($this->_scopeConfig->getValue('payment/phoenix_bankpayment/bank_accounts', \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId));
 
-            $this->_accounts = array();
+            $this->_accounts = [];
             $fields = is_array($accounts) ? array_keys($accounts) : null;
             if (!empty($fields)) {
                 foreach ($accounts[$fields[0]] as $i => $k) {
                     if ($k) {
                         $account = $this->_dataObjectFactory->create();
                         foreach ($fields as $field) {
-                            $account->setData($field,$accounts[$field][$i]);
+                            $account->setData($field, $accounts[$field][$i]);
                         }
                         $this->_accounts[] = $account;
                     }

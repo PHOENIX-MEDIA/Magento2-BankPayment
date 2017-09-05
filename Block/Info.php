@@ -41,21 +41,24 @@ class Info extends \Magento\Payment\Block\Info
     /**
      * @return mixed
      */
-    public function getAccounts() {
+    public function getAccounts()
+    {
         return $this->getMethod()->getAccounts();
     }
 
     /**
      * @return mixed
      */
-    public function getShowBankAccountsInPdf() {
+    public function getShowBankAccountsInPdf()
+    {
         return $this->getMethod()->getConfigData('show_bank_accounts_in_pdf');
     }
 
     /**
      * @return mixed
      */
-    public function getShowCustomTextInPdf() {
+    public function getShowCustomTextInPdf()
+    {
         return $this->getMethod()->getConfigData('show_customtext_in_pdf');
     }
 }
