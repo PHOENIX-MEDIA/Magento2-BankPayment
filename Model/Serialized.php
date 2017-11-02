@@ -24,10 +24,10 @@ namespace Phoenix\BankPayment\Model;
 class Serialized
 {
     /**
-     * @param String $value
+     * @param string $value
      * @return array
      */
-    public function unserialize(String $value)
+    public function unserialize($value)
     {
         $result = json_decode($value, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
