@@ -26,7 +26,7 @@
                 </field>
                 <field id="bank_accounts" translate="label,comment" sortOrder="55" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Bank Accounts</label>
-                    <frontend_model>Phoenix\BankPayment\Block\Adminhtml\BankAccount</frontend_model>
+                    <frontend_model>Phoenix\BankPayment\Block\Adminhtml\System\Config\Form\BankAccount</frontend_model>
                     <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
                     <comment>Add your bank accounts data</comment>
                 </field>

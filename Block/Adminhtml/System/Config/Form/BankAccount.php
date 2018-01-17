@@ -10,12 +10,12 @@
  *
  * @category   Mage
  * @package    Phoenix_BankPayment
- * @copyright  Copyright (c) 2017 Phoenix Media GmbH (http://www.phoenix-media.eu)
+ * @copyright  Copyright (c) 2018 Phoenix Media GmbH (http://www.phoenix-media.eu)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 
-namespace Phoenix\BankPayment\Block\Adminhtml;
+namespace Phoenix\BankPayment\Block\Adminhtml\System\Config\Form;
 
 /**
  * Class BankAccount - Frontend model for account configuration
@@ -62,15 +62,35 @@ class BankAccount extends \Magento\Config\Block\System\Config\Form\Field
     protected function _getRowTemplateHtml($i = 0)
     {
         $html = '<fieldset>';
-        $html .= '<label>' . __('Account holder') . '</label>';
+        $html .= '<p>';
+        $html .= '<label>' . __('Account holder') . '</label><br />';
         $html .= '<input class="input-text" type="text" name="' . $this->getElement()->getName() . '[account_holder][]" value="' . $this->_getValue('account_holder/' . $i) . '" ' . $this->_getDisabled() . ' />';
-        $html .= '<label>' . __('Bank name') . '</label>';
+        $html .= '</p>';
+        $html .= '<p>';
+        $html .= '<label>' . __('Bank name') . '</label><br />';
         $html .= '<input class="input-text" type="text" name="' . $this->getElement()->getName() . '[bank_name][]" value="' . $this->_getValue('bank_name/' . $i) . '" ' . $this->_getDisabled() . ' />';
+        $html .= '</p>';
+        $html .= '<p>&nbsp;</p>';
+        $html .= '<p>';
         $html .= '<label>' . __('IBAN') . '</label>';
         $html .= '<input class="input-text" type="text" name="' . $this->getElement()->getName() . '[iban][]" value="' . $this->_getValue('iban/' . $i) . '" ' . $this->_getDisabled() . ' />';
+        $html .= '</p>';
+        $html .= '<p>';
         $html .= '<label>' . __('BIC') . '</label>';
         $html .= '<input class="input-text" type="text" name="' . $this->getElement()->getName() . '[bic][]" value="' . $this->_getValue('bic/' . $i) . '" ' . $this->_getDisabled() . ' />';
-        $html .= '<br />&nbsp;<br />';
+        $html .= '</p>';
+        $html .= '<p>&nbsp;</p>';
+        $html .= '<p>';
+        $html .= '<strong>' . __('Account data for non SEPA countries') . '</strong>';
+        $html .= '</p>';
+        $html .= '<p>';
+        $html .= '<label>' . __('Account number') . '</label>';
+        $html .= '<input class="input-text" type="text" name="' . $this->getElement()->getName() . '[account_number][]" value="' . $this->_getValue('account_number/' . $i) . '" ' . $this->_getDisabled() . ' />';
+        $html .= '</p>';
+        $html .= '<p>';
+        $html .= '<label>' . __('Sort code') . '</label>';
+        $html .= '<input class="input-text" type="text" name="' . $this->getElement()->getName() . '[sort_code][]" value="' . $this->_getValue('sort_code/' . $i) . '" ' . $this->_getDisabled() . ' />';
+        $html .= '</p>';
         $html .= $this->_getRemoveRowButtonHtml();
         $html .= '</fieldset>';
 

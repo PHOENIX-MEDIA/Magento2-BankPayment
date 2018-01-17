@@ -10,7 +10,7 @@
  *
  * @category   Mage
  * @package    Phoenix_BankPayment
- * @copyright  Copyright (c) 2017 Phoenix Media GmbH (http://www.phoenix-media.eu)
+ * @copyright  Copyright (c) 2018 Phoenix Media GmbH (http://www.phoenix-media.eu)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -35,13 +35,30 @@
         <?php echo $block->escapeHtml(__('Bank name')) ?>: <?php echo $block->escapeHtml($_bankName) ?>
         {{pdf_row_separator}}
         <?php endif; ?>
-        <?php if ($_iban = $_account->getIban()): ?>
-        <?php echo $block->escapeHtml(__('IBAN')) ?>: <?php echo $block->escapeHtml($_iban) ?>
-        {{pdf_row_separator}}
+        <?php if ($block->displaySepaAccountData($_account)): ?>
+            <?php if ($_iban = $_account->getIban()): ?>
+            <?php echo $block->escapeHtml(__('IBAN')) ?>: <?php echo $block->escapeHtml($_iban) ?>
+            {{pdf_row_separator}}
+            <?php endif; ?>
+            <?php if ($_bic = $_account->getBic()): ?>
+            <?php echo $block->escapeHtml(__('BIC')) ?>: <?php echo $block->escapeHtml($_bic) ?>
+            {{pdf_row_separator}}
+            <?php endif; ?>
         <?php endif; ?>
-        <?php if ($_bic = $_account->getBic()): ?>
-        <?php echo $block->escapeHtml(__('BIC')) ?>: <?php echo $block->escapeHtml($_bic) ?>
-        {{pdf_row_separator}}
+        <?php if ($block->displayNonSepaAccountData($_account)): ?>
+            <?php if ($block->displayFullAccountData($_account)): ?>
+                {{pdf_row_separator}}
+                --- <?php echo $block->escapeHtml(__('Account data for non SEPA countries')); ?> ---
+                {{pdf_row_separator}}
+            <?php endif; ?>
+            <?php if ($_accountNumber = $_account->getAccountNumber()): ?>
+                <?php echo $block->escapeHtml(__('Account number')) ?>: <?php echo $block->escapeHtml($_accountNumber) ?>
+                {{pdf_row_separator}}
+            <?php endif; ?>
+            <?php if ($_sortCode = $_account->getSortCode()): ?>
+                <?php echo $block->escapeHtml(__('Sort code')) ?>: <?php echo $block->escapeHtml($_sortCode) ?>
+                {{pdf_row_separator}}
+            <?php endif; ?>
         <?php endif; ?>
         <?php endforeach; ?>
     <?php endif; ?>

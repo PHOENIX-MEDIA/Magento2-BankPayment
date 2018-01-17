@@ -10,7 +10,7 @@
  *
  * @category   Mage
  * @package    Phoenix_BankPayment
- * @copyright  Copyright (c) 2017 Phoenix Media GmbH (http://www.phoenix-media.eu)
+ * @copyright  Copyright (c) 2018 Phoenix Media GmbH (http://www.phoenix-media.eu)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -23,6 +23,7 @@ namespace Phoenix\BankPayment\Block;
  */
 class Form extends \Magento\Payment\Block\Form
 {
+    use \Phoenix\BankPayment\Helper\Account;
 
     /**
      * Bank transfer template

@@ -10,7 +10,7 @@
  *
  * @category   Mage
  * @package    Phoenix_BankPayment
- * @copyright  Copyright (c) 2017 Phoenix Media GmbH (http://www.phoenix-media.eu)
+ * @copyright  Copyright (c) 2018 Phoenix Media GmbH (http://www.phoenix-media.eu)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -54,13 +54,28 @@
                             <tr><td><label><?php echo $block->escapeHtml(__('Account holder')) ?>:</label> </td><td><?php echo $block->escapeHtml($_accountHolder) ?></td></tr>
                         <?php endif; ?>
                         <?php if ($_bankName = $_account->getBankName()): ?>
-                            <tr><td><label><?php echo $block->escapeHtml(__('Bank name')) ?></label>: </td><td><?php echo $block->escapeHtml($_bankName) ?></td></tr>
+                            <tr><td><label><?php echo $block->escapeHtml(__('Bank name')) ?>:</label> </td><td><?php echo $block->escapeHtml($_bankName) ?></td></tr>
                         <?php endif; ?>
-                        <?php if ($_iban = $_account->getIban()): ?>
-                            <tr><td><label><?php echo $block->escapeHtml(__('IBAN')) ?>:</label> </td><td><?php echo $block->escapeHtml($_iban) ?></td></tr>
+                        <?php if ($block->displaySepaAccountData($_account)): ?>
+                            <?php if ($_iban = $_account->getIban()): ?>
+                                <tr><td><label><?php echo $block->escapeHtml(__('IBAN')) ?>:</label> </td><td><?php echo $block->escapeHtml($_iban) ?></td></tr>
+                            <?php endif; ?>
+                            <?php if ($_bic = $_account->getBic()): ?>
+                                <tr><td><label><?php echo $block->escapeHtml(__('BIC')) ?>:</label> </td><td><?php echo $block->escapeHtml($_bic) ?></td></tr>
+                            <?php endif; ?>
                         <?php endif; ?>
-                        <?php if ($_bic = $_account->getBic()): ?>
-                            <tr><td><label><?php echo $block->escapeHtml(__('BIC')) ?>:</label> </td><td><?php echo $block->escapeHtml($_bic) ?></td></tr>
+                        <?php if ($block->displayNonSepaAccountData($_account)): ?>
+                            <?php if ($block->displayFullAccountData($_account)): ?>
+                                <tr><td colspan="2"><br /><strong><?php echo $block->escapeHtml(__('Account data for non SEPA countries')); ?></strong></td></tr>
+                            <?php endif; ?>
+                            <?php if ($_accountNumber = $_account->getAccountNumber()): ?>
+                                <tr><td><label><?php echo $block->escapeHtml(__('Account number')) ?>:</label> </td><td><?php echo $block->escapeHtml($_accountNumber) ?></td>
+                                </tr>
+                            <?php endif; ?>
+                            <?php if ($_sortCode = $_account->getSortCode()): ?>
+                                <tr><td><label><?php echo $block->escapeHtml(__('Sort code')) ?>:</label> </td><td><?php echo $block->escapeHtml($_sortCode) ?></td>
+                                </tr>
+                            <?php endif; ?>
                         <?php endif; ?>
                         </tbody>
                     </table>

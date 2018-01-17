@@ -1,6 +1,6 @@
 <!--
 /**
- * @copyright  Copyright (c) 2017 Phoenix Media GmbH (http://www.phoenix-media.eu)
+ * @copyright  Copyright (c) 2018 Phoenix Media GmbH (http://www.phoenix-media.eu)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 -->
@@ -35,8 +35,15 @@
                 <tbody>
                 <tr data-bind="if: account_holder"><td><label data-bind="i18n: 'Account holder'"></label></td><td data-bind="text: account_holder"></td></tr>
                 <tr data-bind="if: bank_name"><td><label data-bind="i18n: 'Bank name'"></label></td><td data-bind="text: bank_name"></td></tr>
-                <tr data-bind="if: iban"><td><label data-bind="i18n: 'IBAN'"></label></td><td data-bind="text: iban"></td></tr>
-                <tr data-bind="if: bic"><td><label data-bind="i18n: 'BIC'"></label></td><td data-bind="text: bic"></td></tr>
+                <!-- ko if: iban -->
+                    <tr><td><label data-bind="i18n: 'IBAN'"></label></td><td data-bind="text: iban"></td></tr>
+                    <tr data-bind="if: bic"><td><label data-bind="i18n: 'BIC'"></label></td><td data-bind="text: bic"></td></tr>
+                <!--/ko-->
+                <!-- ko if: account_number && sort_code -->
+                    <tr data-bind="if: iban"><td colspan="2" data-bind="i18n: 'Account data for non SEPA countries'"></td></tr>
+                    <tr><td><label data-bind="i18n: 'Account number'"></label></td><td data-bind="text: account_number"></td></tr>
+                    <tr><td><label data-bind="i18n: 'Sort code'"></label></td><td data-bind="text: sort_code"></td></tr>
+                <!--/ko-->
                 </tbody>
             </table>
             <!--/ko-->
