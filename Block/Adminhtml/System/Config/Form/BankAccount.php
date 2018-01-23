@@ -72,11 +72,11 @@ class BankAccount extends \Magento\Config\Block\System\Config\Form\Field
         $html .= '</p>';
         $html .= '<p>&nbsp;</p>';
         $html .= '<p>';
-        $html .= '<label>' . __('IBAN') . '</label>';
+        $html .= '<label>' . __('IBAN') . '</label><br />';
         $html .= '<input class="input-text" type="text" name="' . $this->getElement()->getName() . '[iban][]" value="' . $this->_getValue('iban/' . $i) . '" ' . $this->_getDisabled() . ' />';
         $html .= '</p>';
         $html .= '<p>';
-        $html .= '<label>' . __('BIC') . '</label>';
+        $html .= '<label>' . __('BIC') . '</label><br />';
         $html .= '<input class="input-text" type="text" name="' . $this->getElement()->getName() . '[bic][]" value="' . $this->_getValue('bic/' . $i) . '" ' . $this->_getDisabled() . ' />';
         $html .= '</p>';
         $html .= '<p>&nbsp;</p>';
@@ -84,11 +84,11 @@ class BankAccount extends \Magento\Config\Block\System\Config\Form\Field
         $html .= '<strong>' . __('Account data for non SEPA countries') . '</strong>';
         $html .= '</p>';
         $html .= '<p>';
-        $html .= '<label>' . __('Account number') . '</label>';
+        $html .= '<label>' . __('Account number') . '</label><br />';
         $html .= '<input class="input-text" type="text" name="' . $this->getElement()->getName() . '[account_number][]" value="' . $this->_getValue('account_number/' . $i) . '" ' . $this->_getDisabled() . ' />';
         $html .= '</p>';
         $html .= '<p>';
-        $html .= '<label>' . __('Sort code') . '</label>';
+        $html .= '<label>' . __('Sort code') . '</label><br />';
         $html .= '<input class="input-text" type="text" name="' . $this->getElement()->getName() . '[sort_code][]" value="' . $this->_getValue('sort_code/' . $i) . '" ' . $this->_getDisabled() . ' />';
         $html .= '</p>';
         $html .= $this->_getRemoveRowButtonHtml();
