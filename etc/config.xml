@@ -6,7 +6,7 @@
                 <active>0</active>
                 <model>Phoenix\BankPayment\Model\BankPayment</model>
                 <order_status>pending</order_status>
-                <title>Bank Prepayment</title>
+                <title>Bank Payment</title>
                 <allowspecific>0</allowspecific>
                 <form_block_type>0</form_block_type>
                 <show_bank_accounts_in_pdf>1</show_bank_accounts_in_pdf>
