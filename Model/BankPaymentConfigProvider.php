@@ -35,11 +35,6 @@ class BankPaymentConfigProvider implements ConfigProviderInterface
     private $serialized;
 
     /**
-     * @var Escaper $escaper
-     */
-    private $escaper;
-
-    /**
      * @var \Magento\Cms\Model\PageFactory
      */
     private $cmsPageFactory;
@@ -60,19 +55,16 @@ class BankPaymentConfigProvider implements ConfigProviderInterface
      * @param \Magento\Cms\Helper\Page $cmsPageHelper
      * @param PaymentHelper $paymentHelper
      * @param \Phoenix\BankPayment\Model\Serialized $serialized
-     * @param Escaper $escaper
      */
     public function __construct(
         \Magento\Cms\Model\PageFactory $cmsPageFactory,
         \Magento\Cms\Helper\Page $cmsPageHelper,
         PaymentHelper $paymentHelper,
-        Serialized $serialized,
-        Escaper $escaper
+        Serialized $serialized
     )
     {
         $this->cmsPageFactory = $cmsPageFactory;
         $this->cmsPageHelper = $cmsPageHelper;
-        $this->escaper = $escaper;
         $this->serialized = $serialized;
         $this->method = $paymentHelper->getMethodInstance(BankPayment::PAYMENT_METHOD_PHOENIX_BANKPAYMENT_CODE);
     }
@@ -86,8 +78,8 @@ class BankPaymentConfigProvider implements ConfigProviderInterface
             'payment' => [
                 BankPayment::PAYMENT_METHOD_PHOENIX_BANKPAYMENT_CODE => [
                     'formcmsurl' => $this->getFormCmsUrl(),
-                    'customtext' => nl2br($this->escaper->escapeHtml($this->method->getCustomText())),
-                    'instructions' => nl2br($this->escaper->escapeHtml($this->getInstructions())),
+                    'customtext' => nl2br($this->method->getCustomText()),
+                    'instructions' => nl2br($this->getInstructions()),
                     'accounts' => $this->getAccounts()
                 ],
             ],
@@ -115,9 +107,7 @@ class BankPaymentConfigProvider implements ConfigProviderInterface
      */
     public function getAccounts()
     {
-
         if (!$this->accounts) {
-
             $accounts = $this->serialized->unserialize($this->method->getConfigData('bank_accounts'));
 
             $this->accounts = [];
@@ -127,13 +117,14 @@ class BankPaymentConfigProvider implements ConfigProviderInterface
                     if ($k) {
                         $account = [];
                         foreach ($fields as $field) {
-                            $account[$field] = $this->escaper->escapeHtml($accounts[$field][$i]);
+                            $account[$field] = $accounts[$field][$i];
                         }
                         $this->accounts[] = $account;
                     }
                 }
             }
         }
+
         return $this->accounts;
     }
 
