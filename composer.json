@@ -1,13 +1,13 @@
 {
-    "name": "phoenix/module-bankpayment",
-    "description": "Phoenix Media Bank Prepayment module for Magento 2",
+    "name": "sippsolutions/phoenix-media-bankpayment",
+    "description": "Phoenix Media Bank Payment module for Magento 2 (with PHP8.1 support)",
     "require": {
-        "magento/module-checkout": ">=100.0.0",
-        "magento/module-payment": ">=100.0.0",
-        "magento/framework": ">=100.0.0"
+        "magento/module-checkout": "*",
+        "magento/module-payment": "*",
+        "magento/framework": "*",
+        "php": ">=8.0"
     },
     "type": "magento2-module",
-    "version": "1.1.1",
     "license": [
         "OSL-3.0"
     ],
