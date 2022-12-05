@@ -19,6 +19,7 @@ namespace Phoenix\BankPayment\Model;
 
 /**
  * Class Serialized - is used to unserialize values and ensure compatibility to magento 2.1.x and 2.2
+ *
  * @package Phoenix\BankPayment\Model
  */
 class Serialized
@@ -29,6 +30,9 @@ class Serialized
      */
     public function unserialize($value)
     {
+        if (!$value) {
+            return [];
+        }
         $result = json_decode($value, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
             // not in json format, try serialized array as fallback for pre magento 2.2 versions

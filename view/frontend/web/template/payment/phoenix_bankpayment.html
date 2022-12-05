@@ -47,11 +47,11 @@
                 </tbody>
             </table>
             <!--/ko-->
-            <!-- ko if: getCustomText() -->
-            <br />
-            <!-- ko text: getCustomText() --><!-- /ko --><br />
-            <!--/ko-->
         </div>
+        <!--/ko-->
+        <!-- ko if: getCustomText() -->
+        <br />
+        <!-- ko text: getCustomText() --><!-- /ko --><br />
         <!--/ko-->
         <div class="checkout-agreements-block">
             <!-- ko foreach: $parent.getRegion('before-place-order') -->
@@ -75,4 +75,3 @@
         </div>
     </div>
 </div>
-        
