@@ -1,6 +1,6 @@
 {
-    "name": "sippsolutions/phoenix-media-bankpayment",
-    "description": "Phoenix Media Bank Payment module for Magento 2 (with PHP8.1 support)",
+    "name": "phoenix/module-bankpayment",
+    "description": "Phoenix Media Bank Payment module for Magento 2",
     "require": {
         "magento/module-checkout": "*",
         "magento/module-payment": "*",
